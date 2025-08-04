@@ -298,6 +298,51 @@
             color: var(--dark);
         }
         
+        .delivery-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .delivery-option {
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .delivery-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .delivery-option.selected {
+            border-color: var(--secondary);
+            background-color: #e9f7fe;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.2);
+        }
+        
+        .delivery-details {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .delivery-details.show {
+            display: block;
+        }
+        
+        .address-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
         .order-summary {
             background: #e9f7fe;
             border-radius: 12px;
@@ -458,6 +503,99 @@
             </div>
         </section>
         
+        <!-- Nova seção de Tipo de Entrega -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-truck"></i> Tipo de Entrega</h2>
+            <div class="delivery-options">
+                <div class="delivery-option" data-type="delivery">
+                    <h3>Entrega dentro do Gran Acrópolis IV</h3>
+                    <div class="delivery-details" id="delivery-details">
+                        <div class="address-fields">
+                            <div class="form-group">
+                                <label for="bloco">Bloco:</label>
+                                <select id="bloco" class="address-field">
+                                    <option value="">Selecione o bloco</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                    <option value="32">32</option>
+                                    <option value="33">33</option>
+                                    <option value="34">34</option>
+                                    <option value="35">35</option>
+                                    <option value="36">36</option>
+                                    <option value="37">37</option>
+                                    <option value="38">38</option>
+                                    <option value="39">39</option>
+                                    <option value="40">40</option>
+                                    <option value="41">41</option>
+                                    <option value="42">42</option>
+                                    <option value="43">43</option>
+                                    <option value="44">44</option>
+                                    <option value="45">45</option>
+                                    <option value="46">46</option>
+                                    <option value="47">47</option>
+                                    <option value="48">48</option>
+                                    <option value="49">49</option>
+                                    <option value="50">50</option>
+                                    <option value="51">51</option>
+                                    <option value="52">52</option>
+
+                                    <!-- Gerar opções de bloco de 01 a 52 -->
+                                    ${Array.from({length: 52}, (_, i) => {
+                                        const num = (i + 1).toString().padStart(2, '0');
+                                        return `<option value="${num}">${num}</option>`;
+                                    }).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="apartamento">Apartamento:</label>
+                                <select id="apartamento" class="address-field">
+                                    <option value="">Selecione o apartamento</option>
+                                    <option value="101">101</option>
+                                    <option value="102">102</option>
+                                    <option value="201">201</option>
+                                    <option value="202">202</option>
+                                    <option value="301">301</option>
+                                    <option value="302">302</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="delivery-option" data-type="pickup">
+                    <h3>Peça e Retire na portaria do Gran Acrópolis IV</h3>
+                </div>
+            </div>
+        </section>
+        
         <section class="section">
             <h2 class="section-title"><i class="fas fa-edit"></i> Observações</h2>
             <div class="form-group">
@@ -485,8 +623,8 @@
         const cardapio = {
             pizzas: {
                 tamanhos: [
-                    { id: "broto", nome: "Broto", preco: 18 },
-                    { id: "grande", nome: "Grande", preco: 30 }
+                    { id: "grande", nome: "Grande", preco: 30 },
+                    { id: "broto", nome: "Broto", preco: 18 }
                 ],
                 sabores: [
                     { id: "calabresa", nome: "CALABRESA", descricao: "molho pomodoro italiano, muçarela, calabresa, cebola e orégano", preco: 0 },
@@ -495,6 +633,7 @@
                     { id: "mozzarella", nome: "MOZZARELLA", descricao: "molho pomodoro italiano, muçarela e orégano", preco: 0 },
                     { id: "marguerita", nome: "MARGHERITA", descricao: "molho pomodoro italiano, muçarela, tomate e manjericão", preco: 2 },
                     { id: "napolitana", nome: "NAPOLITANA", descricao: "molho pomodoro italiano, muçarela, presunto, tomate, azeitona e orégano", preco: 2 },
+                    { id: "frango", nome: "FRANGO", descricao: "molho pomodoro italiano, muçarela, frango, milho e orégano", preco: 2 },
                     { id: "alho", nome: "AGLIO E OLIO", descricao: "molho pomodoro italiano, muçarela, alho frito, azeite, azeitona e orégano", preco: 2 },
                     { id: "milho_catupiry", nome: "MILHO CREMOSO", descricao: "molho pomodoro italiano, muçarela, milho, catupiry e orégano", preco: 2 },
                     { id: "calabacon", nome: "CALABACON", descricao: "molho pomodoro italiano, muçarela, calabresa, cebola, azeitona e orégano", preco: 4 },
@@ -533,6 +672,9 @@
             pizzas: [],
             bebidas: [],
             pagamento: "",
+            tipoEntrega: "",
+            bloco: "",
+            apartamento: "",
             observacoes: ""
         };
 
@@ -558,6 +700,38 @@
                 });
             });
             
+            // Configura eventos de tipo de entrega
+            document.querySelectorAll('.delivery-option').forEach(opcao => {
+                opcao.addEventListener('click', () => {
+                    document.querySelectorAll('.delivery-option').forEach(o => o.classList.remove('selected'));
+                    opcao.classList.add('selected');
+                    document.getElementById('bloco').addEventListener('change', (e) => {
+                        pedido.bloco = e.target.value;
+                        atualizarResumo();
+                        });
+                    
+                    const tipoEntrega = opcao.dataset.type;
+                    pedido.tipoEntrega = tipoEntrega;
+                    
+                    // Mostra/oculta os detalhes de endereço conforme necessário
+                    if (tipoEntrega === 'delivery') {
+                        document.getElementById('delivery-details').classList.add('show');
+                    } else {
+                        document.getElementById('delivery-details').classList.remove('show');
+                    }
+                    
+                    atualizarResumo();
+                });
+            });
+            
+            // Configura eventos dos campos de endereço
+            document.querySelectorAll('.address-field').forEach(campo => {
+                campo.addEventListener('change', (e) => {
+                    pedido[e.target.id] = e.target.value;
+                    atualizarResumo();
+                });
+            });
+            
             // Atualiza nome do cliente
             document.getElementById('nome-cliente').addEventListener('input', (e) => {
                 pedido.cliente = e.target.value;
@@ -575,7 +749,7 @@
             const index = pedido.pizzas.length;
             pedido.pizzas.push({
                 tipo: "inteira",
-                tamanho: "broto",
+                tamanho: "grande",
                 sabores: [],
                 quantidade: 1
             });
@@ -766,38 +940,76 @@
             });
         }
 
-        // Renderiza as bebidas
-        function renderizarBebidas() {
-            const container = document.getElementById('bebidas-container');
-            container.innerHTML = '';
-            
-            cardapio.bebidas.forEach(bebida => {
-                const bebidaElement = document.createElement('div');
-                bebidaElement.className = 'sabor-item';
-                bebidaElement.innerHTML = `
-                    <label>
-                        <input type="radio" name="bebida" value="${bebida.id}" ${bebida.id === 'nenhuma' ? 'checked' : ''}>
-                        <strong>${bebida.nome}</strong> ${bebida.preco > 0 ? `(R$ ${bebida.preco.toFixed(2)})` : ''}
-                    </label>
-                `;
+            function renderizarBebidas() {
+                const container = document.getElementById('bebidas-container');
+                container.innerHTML = '';
                 
-                container.appendChild(bebidaElement);
-                
-                // Adiciona evento
-                bebidaElement.querySelector('input').addEventListener('change', (e) => {
-                    if (e.target.checked) {
-                        // Remove todas as bebidas anteriores
-                        pedido.bebidas = [];
-                        
-                        // Adiciona apenas a bebida selecionada (se não for "nenhuma")
-                        if (bebida.id !== 'nenhuma') {
-                            pedido.bebidas.push(bebida);
-                        }
+                cardapio.bebidas.forEach(bebida => {
+                    // Verifica se já existe no pedido
+                    const itemExistente = pedido.bebidas.find(b => b.id === bebida.id);
+                    const quantidade = itemExistente ? itemExistente.quantidade : 0;
+                    
+                    const bebidaElement = document.createElement('div');
+                    bebidaElement.className = 'sabor-item';
+                    bebidaElement.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <div>
+                                <strong>${bebida.nome}</strong> ${bebida.preco > 0 ? `(R$ ${bebida.preco.toFixed(2)})` : ''}
+                            </div>
+                            <div class="pizza-counter" style="margin-top: 0;">
+                                <button class="counter-btn" data-bebida="${bebida.id}" data-action="decrease">-</button>
+                                <input type="number" min="0" value="${quantidade}" class="quantidade-bebida" data-bebida="${bebida.id}">
+                                <button class="counter-btn" data-bebida="${bebida.id}" data-action="increase">+</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(bebidaElement);
+                    
+                    // Adiciona eventos
+                    bebidaElement.querySelectorAll('.counter-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const id = e.target.dataset.bebida;
+                            const action = e.target.dataset.action;
+                            const input = bebidaElement.querySelector('.quantidade-bebida');
+                            let value = parseInt(input.value) || 0;
+                            
+                            if (action === 'increase') {
+                                value += 1;
+                            } else {
+                                value = Math.max(0, value - 1);
+                            }
+                            
+                            input.value = value;
+                            atualizarBebidaNoPedido(id, value);
+                            atualizarResumo();
+                        });
+                    });
+                    
+                    bebidaElement.querySelector('.quantidade-bebida').addEventListener('change', (e) => {
+                        const id = e.target.dataset.bebida;
+                        const value = parseInt(e.target.value) || 0;
+                        atualizarBebidaNoPedido(id, value);
                         atualizarResumo();
-                    }
+                    });
                 });
-            });
-        }
+            }
+
+            function atualizarBebidaNoPedido(id, quantidade) {
+                // Remove se existir
+                pedido.bebidas = pedido.bebidas.filter(b => b.id !== id);
+                
+                // Se quantidade > 0, adiciona ao pedido
+                if (quantidade > 0) {
+                    const bebida = cardapio.bebidas.find(b => b.id === id);
+                    if (bebida) {
+                        pedido.bebidas.push({
+                            ...bebida,
+                            quantidade: quantidade
+                        });
+                    }
+                }
+            }
 
         // Atualiza o resumo do pedido e o total
         function atualizarResumo() {
@@ -835,13 +1047,28 @@
             });
             
             // Bebidas
+            // Dentro da função atualizarResumo(), modifique a parte das bebidas para:
             pedido.bebidas.forEach(bebida => {
-                total += bebida.preco;
+                const subtotal = bebida.preco * bebida.quantidade;
+                total += subtotal;
                 html += `<div class="order-item">
-                    <div><strong>Bebida:</strong> ${bebida.nome}</div>
-                    <div><strong>Valor:</strong> R$ ${bebida.preco.toFixed(2)}</div>
+                    <div><strong>Bebida:</strong> ${bebida.nome} × ${bebida.quantidade}</div>
+                    <div><strong>Valor:</strong> R$ ${subtotal.toFixed(2)}</div>
                 </div>`;
             });
+            
+            // Tipo de entrega
+            if (pedido.tipoEntrega === 'delivery') {
+                html += `<div class="order-item"><strong>Tipo de Entrega:</strong> Entrega no Gran Acrópolis IV</div>`;
+                if (pedido.bloco) {
+                    html += `<div class="order-item"><strong>Bloco:</strong> ${pedido.bloco}</div>`;
+                }
+                if (pedido.apartamento) {
+                    html += `<div class="order-item"><strong>Apartamento:</strong> ${pedido.apartamento}</div>`;
+                }
+            } else if (pedido.tipoEntrega === 'pickup') {
+                html += `<div class="order-item"><strong>Tipo de Entrega:</strong> Retirada na portaria</div>`;
+            }
             
             // Pagamento
             if (pedido.pagamento) {
@@ -896,6 +1123,17 @@
                 return;
             }
             
+            if (!pedido.tipoEntrega) {
+                alert("Por favor, selecione um tipo de entrega");
+                return;
+            }
+            
+            // Validação adicional para entrega
+            if (pedido.tipoEntrega === 'delivery' && (!pedido.bloco || !pedido.apartamento)) {
+                alert("Por favor, informe o bloco e apartamento para entrega");
+                return;
+            }
+            
             // Formata o pedido para WhatsApp
             let pedidoTexto = `*🍕 PEDIDO DOM REZENDE PIZZAS* 🍕\n\n`;
             pedidoTexto += `*Cliente:* ${pedido.cliente}\n\n`;
@@ -909,11 +1147,22 @@
             });
             
             // Bebidas
+            // Dentro da função finalizarPedido(), modifique a parte das bebidas para:
             if (pedido.bebidas.length > 0) {
                 pedidoTexto += `\n*BEBIDAS:*\n`;
                 pedido.bebidas.forEach(bebida => {
-                    pedidoTexto += `- ${bebida.nome}\n`;
+                    pedidoTexto += `- ${bebida.nome} × ${bebida.quantidade}\n`;
                 });
+            }
+            
+            // Tipo de entrega
+            pedidoTexto += `\n*TIPO DE ENTREGA:* `;
+            if (pedido.tipoEntrega === 'delivery') {
+                pedidoTexto += `Entrega no Gran Acrópolis IV\n`;
+                pedidoTexto += `*Bloco:* ${pedido.bloco}\n`;
+                pedidoTexto += `*Apartamento:* ${pedido.apartamento}\n`;
+            } else {
+                pedidoTexto += `Retirada na portaria\n`;
             }
             
             // Pagamento e observações
