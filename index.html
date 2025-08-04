@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - DOM REZENDE PIZZAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #e74c3c; /* Vermelho */
+            --secondary: #2ecc71; /* Verde */
+            --light: #ffffff; /* Branco */
+            --dark: #34495e;
+            --success: #27ae60;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 10px;
+            max-width: 100%;
+            overflow-x: hidden;
+            background-image: linear-gradient(to bottom, rgba(46, 204, 113, 0.05), rgba(231, 76, 60, 0.05));
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            max-width: 180px;
+            max-height: 100px;
+            border-radius: 10px;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .logo-placeholder {
+            width: 180px;
+            height: 100px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        
+        .section-title {
+            color: var(--dark);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #fafafa;
+        }
+        
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            cursor: pointer;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+        
+        .radio-group label:hover {
+            background: #e9f7fe;
+            border-color: var(--primary);
+        }
+        
+        .pizza-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
+            border-left: 4px solid var(--primary);
+            position: relative;
+        }
+        
+        .pizza-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .sabores-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+            padding: 8px;
+            margin-top: 12px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            background: white;
+        }
+        
+        .sabor-item {
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .sabor-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            border-color: var(--secondary);
+        }
+        
+        .sabor-item.selected {
+            background-color: #d1ecf1;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(231, 76, 60, 0.2);
+        }
+        
+        .sabor-item input {
+            margin-right: 10px;
+        }
+        
+        .add-pizza-btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .add-pizza-btn:hover {
+            background-color: #219653;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .remove-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        
+        .remove-btn:hover {
+            transform: scale(1.1);
+            background-color: #c0392b;
+        }
+        
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .payment-option {
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .payment-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .payment-option.selected {
+            border-color: var(--secondary);
+            background-color: #e9f7fe;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.2);
+        }
+        
+        .payment-option i {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .delivery-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .delivery-option {
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+        
+        .delivery-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .delivery-option.selected {
+            border-color: var(--secondary);
+            background-color: #e9f7fe;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.2);
+        }
+        
+        .delivery-details {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .delivery-details.show {
+            display: block;
+        }
+        
+        .address-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .order-summary {
+            background: #e9f7fe;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 15px;
+            border: 1px solid #d1ecf1;
+        }
+        
+        .order-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        
+        .total {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary);
+            color: var(--secondary);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 18px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 25px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .pizza-counter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .counter-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            background: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .counter-btn:hover {
+            background-color: #f1f1f1;
+            border-color: var(--primary);
+        }
+        
+        .warning {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Responsividade */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 700px;
+            }
+            
+            .payment-options {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .sabores-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <!-- Substitua o placeholder pela URL da sua logo -->
+                <img src="C:\Users\janai\OneDrive\Imagens\Imagem do WhatsApp de 2025-06-16 à(s) 21.48.21_4b58f240.jpg" alt="Dom Rezende Pizzas" class="logo">
+            </div>
+            <h1><i class="fas fa-pizza-slice"></i> DOM REZENDE PIZZAS</h1>
+        </header>
+        
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-user"></i> Dados do Cliente</h2>
+            <div class="form-group">
+                <label for="nome-cliente">Nome para Comanda:</label>
+                <input type="text" id="nome-cliente" placeholder="Digite seu nome completo">
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-pizza-slice"></i> Pizzas</h2>
+            <div id="pizzas-container">
+                <!-- Pizzas serão adicionadas dinamicamente aqui -->
+            </div>
+            <button class="add-pizza-btn" id="add-pizza">
+                <i class="fas fa-plus"></i> Adicionar Pizza
+            </button>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-wine-bottle"></i> Bebidas</h2>
+            <div class="form-group">
+                <div class="sabores-container" id="bebidas-container">
+                    <!-- Bebidas serão adicionadas dinamicamente aqui -->
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Forma de Pagamento</h2>
+            <div class="payment-options">
+                <div class="payment-option" data-value="pix">
+                    <i class="fas fa-qrcode"></i>
+                    <div>PIX</div>
+                </div>
+                <div class="payment-option" data-value="credito">
+                    <i class="fas fa-credit-card"></i>
+                    <div>Cartão Crédito</div>
+                </div>
+                <div class="payment-option" data-value="debito">
+                    <i class="fas fa-credit-card"></i>
+                    <div>Cartão Débito</div>
+                </div>
+                <div class="payment-option" data-value="dinheiro">
+                    <i class="fas fa-money-bill"></i>
+                    <div>Dinheiro</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Nova seção de Tipo de Entrega -->
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-truck"></i> Tipo de Entrega</h2>
+            <div class="delivery-options">
+                <div class="delivery-option" data-type="delivery">
+                    <h3>Entrega dentro do Gran Acrópolis IV</h3>
+                    <div class="delivery-details" id="delivery-details">
+                        <div class="address-fields">
+                            <div class="form-group">
+                                <label for="bloco">Bloco:</label>
+                                <select id="bloco" class="address-field">
+                                    <option value="">Selecione o bloco</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                    <option value="31">31</option>
+                                    <option value="32">32</option>
+                                    <option value="33">33</option>
+                                    <option value="34">34</option>
+                                    <option value="35">35</option>
+                                    <option value="36">36</option>
+                                    <option value="37">37</option>
+                                    <option value="38">38</option>
+                                    <option value="39">39</option>
+                                    <option value="40">40</option>
+                                    <option value="41">41</option>
+                                    <option value="42">42</option>
+                                    <option value="43">43</option>
+                                    <option value="44">44</option>
+                                    <option value="45">45</option>
+                                    <option value="46">46</option>
+                                    <option value="47">47</option>
+                                    <option value="48">48</option>
+                                    <option value="49">49</option>
+                                    <option value="50">50</option>
+                                    <option value="51">51</option>
+                                    <option value="52">52</option>
+
+                                    <!-- Gerar opções de bloco de 01 a 52 -->
+                                    ${Array.from({length: 52}, (_, i) => {
+                                        const num = (i + 1).toString().padStart(2, '0');
+                                        return `<option value="${num}">${num}</option>`;
+                                    }).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="apartamento">Apartamento:</label>
+                                <select id="apartamento" class="address-field">
+                                    <option value="">Selecione o apartamento</option>
+                                    <option value="101">101</option>
+                                    <option value="102">102</option>
+                                    <option value="201">201</option>
+                                    <option value="202">202</option>
+                                    <option value="301">301</option>
+                                    <option value="302">302</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="delivery-option" data-type="pickup">
+                    <h3>Peça e Retire na portaria do Gran Acrópolis IV</h3>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-edit"></i> Observações</h2>
+            <div class="form-group">
+                <textarea id="observacoes" rows="3" placeholder="Ex: Tirar cebola, borda recheada, ponto da massa..."></textarea>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title"><i class="fas fa-receipt"></i> Resumo do Pedido</h2>
+            <div class="order-summary">
+                <div id="resumo-pedido">
+                    <!-- Resumo será gerado dinamicamente aqui -->
+                </div>
+                <div class="total">Total: R$ <span id="total">0.00</span></div>
+            </div>
+        </section>
+        
+        <button class="submit-btn" id="finalizar-pedido">
+            <i class="fab fa-whatsapp"></i> Finalizar Pedido via WhatsApp
+        </button>
+    </div>
+
+    <script>
+        // Dados do cardápio
+        const cardapio = {
+            pizzas: {
+                tamanhos: [
+                    { id: "grande", nome: "Grande", preco: 30 },
+                    { id: "broto", nome: "Broto", preco: 18 }
+                ],
+                sabores: [
+                    { id: "calabresa", nome: "CALABRESA", descricao: "molho pomodoro italiano, muçarela, calabresa, cebola e orégano", preco: 0 },
+                    { id: "presunto", nome: "PRESUNTO", descricao: "molho pomodoro italiano, muçarela, presunto e orégano", preco: 0 },
+                    { id: "milho", nome: "MILHO", descricao: "molho pomodoro italiano, muçarela, milho e orégano", preco: 0 },
+                    { id: "mozzarella", nome: "MOZZARELLA", descricao: "molho pomodoro italiano, muçarela e orégano", preco: 0 },
+                    { id: "marguerita", nome: "MARGHERITA", descricao: "molho pomodoro italiano, muçarela, tomate e manjericão", preco: 2 },
+                    { id: "napolitana", nome: "NAPOLITANA", descricao: "molho pomodoro italiano, muçarela, presunto, tomate, azeitona e orégano", preco: 2 },
+                    { id: "frango", nome: "FRANGO", descricao: "molho pomodoro italiano, muçarela, frango, milho e orégano", preco: 2 },
+                    { id: "alho", nome: "AGLIO E OLIO", descricao: "molho pomodoro italiano, muçarela, alho frito, azeite, azeitona e orégano", preco: 2 },
+                    { id: "milho_catupiry", nome: "MILHO CREMOSO", descricao: "molho pomodoro italiano, muçarela, milho, catupiry e orégano", preco: 2 },
+                    { id: "calabacon", nome: "CALABACON", descricao: "molho pomodoro italiano, muçarela, calabresa, cebola, azeitona e orégano", preco: 4 },
+                    { id: "franbacon", nome: "FRANBACON", descricao: "molho pomodoro italiano, muçarela, frango, bacon e orégano", preco: 4 },
+                    { id: "calabresacatupiry", nome: "CALABRESA C/ CATUPIRY", descricao: "molho pomodoro italiano, muçarela, calabresa, catupiry e orégano", preco: 4 },
+                    { id: "frangocatupiry", nome: "FRANGO C/ CATUPIRY", descricao: "molho pomodoro italiano, muçarela, frango, milho, catupiry e orégano", preco: 4 },
+                    { id: "portuguesa", nome: "PORTUGUESA", descricao: "molho pomodoro italiano, muçarela, presunto, calabresa, tomate, pimentão, cebola, azeitona, ovo cozido e orégano", preco: 6 },
+                    { id: "caipira", nome: "CAIPIRA", descricao: "molho pomodoro italiano, muçarela, frango, bacon, milho, catupiry e orégano", preco: 6 },
+                    { id: "bacon", nome: "BACON", descricao: "molho pomodoro italiano, muçarela, bacon, cebola, cheddar, azeitona e orégano", preco: 6 },
+                    //{ id: "carne_seca", nome: "CARNE SECA C/ CATUPIRY", descricao: "molho pomodoro italiano, muçarela, carne seca, cebola, catupiry, azeitona e orégano", preco: 6 },
+                    { id: "chocolate", nome: "CHOCOLATE", descricao: "molho dolce, muçarela, blend chocolate", preco: 2 },
+                    { id: "banana", nome: "BANANA", descricao: "molho dolce, muçarela, banana, açúcar e canela", preco: 2 },
+                    { id: "choconana", nome: "CHOCONANA", descricao: "molho dolce, muçarela, blend chocolate, banana, açúcar e canela", preco: 6 },
+                    { id: "romeu", nome: "ROMEU & JULIETA", descricao: "molho dolce, muçarela, creme de leite e goiabada", preco: 6 }
+                ]
+            },
+            bebidas: [
+                { id: "kuat", nome: "KUAT 1,5L", preco: 7 },
+                //{ id: "coca", nome: "Coca-Cola 2L", preco: 12 },
+                //{ id: "guarana", nome: "Guaraná Antarctica 2L", preco: 10 },
+                //{ id: "agua", nome: "Água Mineral 500ml", preco: 4 },
+                //{ id: "suco", nome: "Suco Natural 500ml", preco: 8 },
+                { id: "nenhuma", nome: "Sem Bebida", preco: 0 }
+            ],
+            pagamentos: [
+                { id: "pix", nome: "PIX", icon: "fas fa-qrcode" },
+                { id: "credito", nome: "Cartão Crédito", icon: "fas fa-credit-card" },
+                { id: "debito", nome: "Cartão Débito", icon: "fas fa-credit-card" },
+                { id: "dinheiro", nome: "Dinheiro", icon: "fas fa-money-bill" }
+            ]
+        };
+
+        // Estado do pedido
+        let pedido = {
+            cliente: "",
+            pizzas: [],
+            bebidas: [],
+            pagamento: "",
+            tipoEntrega: "",
+            bloco: "",
+            apartamento: "",
+            observacoes: ""
+        };
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            // Adiciona a primeira pizza
+            adicionarPizza();
+            
+            // Renderiza as bebidas
+            renderizarBebidas();
+            
+            // Configura eventos
+            document.getElementById('add-pizza').addEventListener('click', adicionarPizza);
+            document.getElementById('finalizar-pedido').addEventListener('click', finalizarPedido);
+            
+            // Configura eventos de pagamento
+            document.querySelectorAll('.payment-option').forEach(opcao => {
+                opcao.addEventListener('click', () => {
+                    document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+                    opcao.classList.add('selected');
+                    pedido.pagamento = opcao.dataset.value;
+                    atualizarResumo();
+                });
+            });
+            
+            // Configura eventos de tipo de entrega
+            document.querySelectorAll('.delivery-option').forEach(opcao => {
+                opcao.addEventListener('click', () => {
+                    document.querySelectorAll('.delivery-option').forEach(o => o.classList.remove('selected'));
+                    opcao.classList.add('selected');
+                    document.getElementById('bloco').addEventListener('change', (e) => {
+                        pedido.bloco = e.target.value;
+                        atualizarResumo();
+                        });
+                    
+                    const tipoEntrega = opcao.dataset.type;
+                    pedido.tipoEntrega = tipoEntrega;
+                    
+                    // Mostra/oculta os detalhes de endereço conforme necessário
+                    if (tipoEntrega === 'delivery') {
+                        document.getElementById('delivery-details').classList.add('show');
+                    } else {
+                        document.getElementById('delivery-details').classList.remove('show');
+                    }
+                    
+                    atualizarResumo();
+                });
+            });
+            
+            // Configura eventos dos campos de endereço
+            document.querySelectorAll('.address-field').forEach(campo => {
+                campo.addEventListener('change', (e) => {
+                    pedido[e.target.id] = e.target.value;
+                    atualizarResumo();
+                });
+            });
+            
+            // Atualiza nome do cliente
+            document.getElementById('nome-cliente').addEventListener('input', (e) => {
+                pedido.cliente = e.target.value;
+                atualizarResumo();
+            });
+            
+            // Atualiza observações
+            document.getElementById('observacoes').addEventListener('input', (e) => {
+                pedido.observacoes = e.target.value;
+            });
+        });
+
+        // Adiciona uma nova pizza ao pedido
+        function adicionarPizza() {
+            const index = pedido.pizzas.length;
+            pedido.pizzas.push({
+                tipo: "inteira",
+                tamanho: "grande",
+                sabores: [],
+                quantidade: 1
+            });
+            
+            renderizarPizzas();
+            atualizarResumo();
+        }
+
+        // Remove uma pizza do pedido
+        function removerPizza(index) {
+            pedido.pizzas.splice(index, 1);
+            renderizarPizzas();
+            atualizarResumo();
+        }
+
+        // Renderiza todas as pizzas
+        function renderizarPizzas() {
+            const container = document.getElementById('pizzas-container');
+            container.innerHTML = '';
+            
+            pedido.pizzas.forEach((pizza, index) => {
+                const pizzaElement = document.createElement('div');
+                pizzaElement.className = 'pizza-item';
+                pizzaElement.innerHTML = `
+                    <div class="pizza-header">
+                        <h3>Pizza ${index + 1}</h3>
+                        <button class="remove-btn" data-index="${index}"><i class="fas fa-times"></i></button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tipo:</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="tipo-${index}" value="inteira" ${pizza.tipo === 'inteira' ? 'checked' : ''}>
+                                Inteira
+                            </label>
+                            <label>
+                                <input type="radio" name="tipo-${index}" value="metade" ${pizza.tipo === 'metade' ? 'checked' : ''}>
+                                Metade-Metade
+                            </label>
+                        </div>
+                        <div class="warning">
+                            <i class="fas fa-info-circle"></i>
+                            ${pizza.tipo === 'inteira' ? 
+                                'Pizza inteira: apenas 1 sabor' : 
+                                'Pizza metade-metade: até 2 sabores'}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tamanho:</label>
+                        <select class="tamanho" data-index="${index}">
+                            ${cardapio.pizzas.tamanhos.map(t => 
+                                `<option value="${t.id}" ${pizza.tamanho === t.id ? 'selected' : ''}>
+                                    ${t.nome} (R$ ${t.preco.toFixed(2)})
+                                </option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Sabores:</label>
+                        <div class="sabores-container">
+                            ${cardapio.pizzas.sabores.map(sabor => {
+                                const isSelected = pizza.sabores.some(s => s.id === sabor.id);
+                                return `
+                                    <div class="sabor-item ${isSelected ? 'selected' : ''}" data-sabor="${sabor.id}" data-index="${index}">
+                                        <input type="checkbox" ${isSelected ? 'checked' : ''}>
+                                        <strong>${sabor.nome}</strong> ${sabor.preco > 0 ? `(+ R$ ${sabor.preco.toFixed(2)})` : ''}
+                                        <div style="font-size: 0.9rem; color: #666;">${sabor.descricao}</div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Quantidade:</label>
+                        <div class="pizza-counter">
+                            <button class="counter-btn" data-index="${index}" data-action="decrease">-</button>
+                            <input type="number" min="1" value="${pizza.quantidade}" class="quantidade" data-index="${index}">
+                            <button class="counter-btn" data-index="${index}" data-action="increase">+</button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(pizzaElement);
+            });
+            
+            // Configura eventos
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = parseInt(e.currentTarget.dataset.index);
+                    removerPizza(index);
+                });
+            });
+            
+            document.querySelectorAll('.tamanho').forEach(select => {
+                select.addEventListener('change', (e) => {
+                    const index = parseInt(e.currentTarget.dataset.index);
+                    pedido.pizzas[index].tamanho = e.target.value;
+                    atualizarResumo();
+                });
+            });
+            
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const name = e.target.name;
+                    const index = parseInt(name.split('-')[1]);
+                    pedido.pizzas[index].tipo = e.target.value;
+                    
+                    // Se mudou para inteira e tem mais de 1 sabor, remover os extras
+                    if (pedido.pizzas[index].tipo === 'inteira' && pedido.pizzas[index].sabores.length > 1) {
+                        // Mantém apenas o primeiro sabor
+                        pedido.pizzas[index].sabores = [pedido.pizzas[index].sabores[0]];
+                        
+                        // Re-renderiza as pizzas para atualizar a seleção
+                        renderizarPizzas();
+                    }
+                    
+                    atualizarResumo();
+                });
+            });
+            
+            document.querySelectorAll('.sabor-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const saborId = e.currentTarget.dataset.sabor;
+                    const index = parseInt(e.currentTarget.dataset.index);
+                    const pizza = pedido.pizzas[index];
+                    
+                    // Encontra o sabor no cardápio
+                    const sabor = cardapio.pizzas.sabores.find(s => s.id === saborId);
+                    
+                    // Verifica se já está selecionado
+                    const saborIndex = pizza.sabores.findIndex(s => s.id === saborId);
+                    
+                    if (saborIndex === -1) {
+                        // Verifica as regras de seleção
+                        if (pizza.tipo === 'inteira' && pizza.sabores.length >= 1) {
+                            alert('Pizza inteira permite apenas 1 sabor!');
+                            return;
+                        } else if (pizza.tipo === 'metade' && pizza.sabores.length >= 2) {
+                            alert('Pizza metade-metade permite no máximo 2 sabores!');
+                            return;
+                        }
+                        
+                        pizza.sabores.push(sabor);
+                    } else {
+                        pizza.sabores.splice(saborIndex, 1);
+                    }
+                    
+                    // Atualiza visualmente
+                    e.currentTarget.classList.toggle('selected');
+                    const checkbox = e.currentTarget.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    
+                    atualizarResumo();
+                });
+            });
+            
+            document.querySelectorAll('.quantidade').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const index = parseInt(e.target.dataset.index);
+                    const value = parseInt(e.target.value) || 1;
+                    pedido.pizzas[index].quantidade = Math.max(1, value);
+                    e.target.value = pedido.pizzas[index].quantidade;
+                    atualizarResumo();
+                });
+            });
+            
+            document.querySelectorAll('.counter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.dataset.index);
+                    const action = e.target.dataset.action;
+                    
+                    if (action === 'increase') {
+                        pedido.pizzas[index].quantitude += 1;
+                    } else {
+                        pedido.pizzas[index].quantidade = Math.max(1, pedido.pizzas[index].quantidade - 1);
+                    }
+                    
+                    // Atualiza o input
+                    const input = document.querySelector(`.quantidade[data-index="${index}"]`);
+                    input.value = pedido.pizzas[index].quantidade;
+                    
+                    atualizarResumo();
+                });
+            });
+        }
+
+            function renderizarBebidas() {
+                const container = document.getElementById('bebidas-container');
+                container.innerHTML = '';
+                
+                cardapio.bebidas.forEach(bebida => {
+                    // Verifica se já existe no pedido
+                    const itemExistente = pedido.bebidas.find(b => b.id === bebida.id);
+                    const quantidade = itemExistente ? itemExistente.quantidade : 0;
+                    
+                    const bebidaElement = document.createElement('div');
+                    bebidaElement.className = 'sabor-item';
+                    bebidaElement.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <div>
+                                <strong>${bebida.nome}</strong> ${bebida.preco > 0 ? `(R$ ${bebida.preco.toFixed(2)})` : ''}
+                            </div>
+                            <div class="pizza-counter" style="margin-top: 0;">
+                                <button class="counter-btn" data-bebida="${bebida.id}" data-action="decrease">-</button>
+                                <input type="number" min="0" value="${quantidade}" class="quantidade-bebida" data-bebida="${bebida.id}">
+                                <button class="counter-btn" data-bebida="${bebida.id}" data-action="increase">+</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(bebidaElement);
+                    
+                    // Adiciona eventos
+                    bebidaElement.querySelectorAll('.counter-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const id = e.target.dataset.bebida;
+                            const action = e.target.dataset.action;
+                            const input = bebidaElement.querySelector('.quantidade-bebida');
+                            let value = parseInt(input.value) || 0;
+                            
+                            if (action === 'increase') {
+                                value += 1;
+                            } else {
+                                value = Math.max(0, value - 1);
+                            }
+                            
+                            input.value = value;
+                            atualizarBebidaNoPedido(id, value);
+                            atualizarResumo();
+                        });
+                    });
+                    
+                    bebidaElement.querySelector('.quantidade-bebida').addEventListener('change', (e) => {
+                        const id = e.target.dataset.bebida;
+                        const value = parseInt(e.target.value) || 0;
+                        atualizarBebidaNoPedido(id, value);
+                        atualizarResumo();
+                    });
+                });
+            }
+
+            function atualizarBebidaNoPedido(id, quantidade) {
+                // Remove se existir
+                pedido.bebidas = pedido.bebidas.filter(b => b.id !== id);
+                
+                // Se quantidade > 0, adiciona ao pedido
+                if (quantidade > 0) {
+                    const bebida = cardapio.bebidas.find(b => b.id === id);
+                    if (bebida) {
+                        pedido.bebidas.push({
+                            ...bebida,
+                            quantidade: quantidade
+                        });
+                    }
+                }
+            }
+
+        // Atualiza o resumo do pedido e o total
+        function atualizarResumo() {
+            const resumoContainer = document.getElementById('resumo-pedido');
+            const totalElement = document.getElementById('total');
+            
+            let html = '';
+            let total = 0;
+            
+            // Nome do cliente
+            if (pedido.cliente) {
+                html += `<div class="order-item"><strong>Cliente:</strong> ${pedido.cliente}</div>`;
+            }
+            
+            // Pizzas
+            pedido.pizzas.forEach((pizza, index) => {
+                const tamanho = cardapio.pizzas.tamanhos.find(t => t.id === pizza.tamanho);
+                const precoBase = tamanho ? tamanho.preco : 0;
+                
+                // Preço adicional dos sabores
+                let adicional = 0;
+                pizza.sabores.forEach(sabor => {
+                    adicional += sabor.preco;
+                });
+                
+                // Preço total para esta pizza
+                const precoPizza = (precoBase + adicional) * pizza.quantidade;
+                total += precoPizza;
+                
+                html += `<div class="order-item">
+                    <div><strong>Pizza ${index + 1}:</strong> ${tamanho.nome} (${pizza.tipo === 'inteira' ? 'Inteira' : 'Metade-Metade'}) × ${pizza.quantidade}</div>
+                    <div><strong>Sabores:</strong> ${pizza.sabores.map(s => s.nome).join(' + ')}</div>
+                    <div><strong>Valor:</strong> R$ ${precoPizza.toFixed(2)}</div>
+                </div>`;
+            });
+            
+            // Bebidas
+            // Dentro da função atualizarResumo(), modifique a parte das bebidas para:
+            pedido.bebidas.forEach(bebida => {
+                const subtotal = bebida.preco * bebida.quantidade;
+                total += subtotal;
+                html += `<div class="order-item">
+                    <div><strong>Bebida:</strong> ${bebida.nome} × ${bebida.quantidade}</div>
+                    <div><strong>Valor:</strong> R$ ${subtotal.toFixed(2)}</div>
+                </div>`;
+            });
+            
+            // Tipo de entrega
+            if (pedido.tipoEntrega === 'delivery') {
+                html += `<div class="order-item"><strong>Tipo de Entrega:</strong> Entrega no Gran Acrópolis IV</div>`;
+                if (pedido.bloco) {
+                    html += `<div class="order-item"><strong>Bloco:</strong> ${pedido.bloco}</div>`;
+                }
+                if (pedido.apartamento) {
+                    html += `<div class="order-item"><strong>Apartamento:</strong> ${pedido.apartamento}</div>`;
+                }
+            } else if (pedido.tipoEntrega === 'pickup') {
+                html += `<div class="order-item"><strong>Tipo de Entrega:</strong> Retirada na portaria</div>`;
+            }
+            
+            // Pagamento
+            if (pedido.pagamento) {
+                const pagamento = cardapio.pagamentos.find(p => p.id === pedido.pagamento);
+                html += `<div class="order-item"><strong>Pagamento:</strong> ${pagamento ? pagamento.nome : ''}</div>`;
+            }
+            
+            // Se não houver itens
+            if (html === '') {
+                html = '<div class="order-item">Nenhum item selecionado</div>';
+            }
+            
+            resumoContainer.innerHTML = html;
+            totalElement.textContent = total.toFixed(2);
+        }
+
+        // Finaliza o pedido
+        function finalizarPedido() {
+            // Validações
+            if (!pedido.cliente) {
+                alert("Por favor, informe seu nome para a comanda");
+                return;
+            }
+            
+            if (pedido.pizzas.length === 0) {
+                alert("Por favor, adicione pelo menos uma pizza");
+                return;
+            }
+            
+            // Valida sabores de cada pizza
+            for (let i = 0; i < pedido.pizzas.length; i++) {
+                const pizza = pedido.pizzas[i];
+                
+                if (pizza.sabores.length === 0) {
+                    alert(`Por favor, selecione pelo menos um sabor para a Pizza ${i+1}`);
+                    return;
+                }
+                
+                if (pizza.tipo === 'inteira' && pizza.sabores.length > 1) {
+                    alert(`Pizza inteira (Pizza ${i+1}) deve ter apenas um sabor!`);
+                    return;
+                }
+                
+                if (pizza.tipo === 'metade' && pizza.sabores.length !== 2) {
+                    alert(`Pizza metade-metade (Pizza ${i+1}) deve ter exatamente dois sabores!`);
+                    return;
+                }
+            }
+            
+            if (!pedido.pagamento) {
+                alert("Por favor, selecione uma forma de pagamento");
+                return;
+            }
+            
+            if (!pedido.tipoEntrega) {
+                alert("Por favor, selecione um tipo de entrega");
+                return;
+            }
+            
+            // Validação adicional para entrega
+            if (pedido.tipoEntrega === 'delivery' && (!pedido.bloco || !pedido.apartamento)) {
+                alert("Por favor, informe o bloco e apartamento para entrega");
+                return;
+            }
+            
+            // Formata o pedido para WhatsApp
+            let pedidoTexto = `*🍕 PEDIDO DOM REZENDE PIZZAS* 🍕\n\n`;
+            pedidoTexto += `*Cliente:* ${pedido.cliente}\n\n`;
+            
+            // Pizzas
+            pedidoTexto += `*PIZZAS:*\n`;
+            pedido.pizzas.forEach((pizza, index) => {
+                const tamanho = cardapio.pizzas.tamanhos.find(t => t.id === pizza.tamanho);
+                pedidoTexto += `${index + 1}. ${tamanho.nome} (${pizza.tipo === 'inteira' ? 'Inteira' : 'Metade-Metade'}) × ${pizza.quantidade}\n`;
+                pedidoTexto += `   Sabores: ${pizza.sabores.map(s => s.nome).join(' + ')}\n`;
+            });
+            
+            // Bebidas
+            // Dentro da função finalizarPedido(), modifique a parte das bebidas para:
+            if (pedido.bebidas.length > 0) {
+                pedidoTexto += `\n*BEBIDAS:*\n`;
+                pedido.bebidas.forEach(bebida => {
+                    pedidoTexto += `- ${bebida.nome} × ${bebida.quantidade}\n`;
+                });
+            }
+            
+            // Tipo de entrega
+            pedidoTexto += `\n*TIPO DE ENTREGA:* `;
+            if (pedido.tipoEntrega === 'delivery') {
+                pedidoTexto += `Entrega no Gran Acrópolis IV\n`;
+                pedidoTexto += `*Bloco:* ${pedido.bloco}\n`;
+                pedidoTexto += `*Apartamento:* ${pedido.apartamento}\n`;
+            } else {
+                pedidoTexto += `Retirada na portaria\n`;
+            }
+            
+            // Pagamento e observações
+            const pagamento = cardapio.pagamentos.find(p => p.id === pedido.pagamento);
+            pedidoTexto += `\n*FORMA DE PAGAMENTO:* ${pagamento.nome}\n`;
+            pedidoTexto += `*OBSERVAÇÕES:* ${pedido.observacoes || "Nenhuma"}\n\n`;
+            
+            // Total
+            const total = document.getElementById('total').textContent;
+            pedidoTexto += `*TOTAL: R$ ${total}*\n\n`;
+            pedidoTexto += `_Para confirmar, responda 'CONFIRMAR' e aguarde nosso contato._`;
+            
+            // Abre o WhatsApp com o pedido pré-preenchido
+            const whatsappURL = `https://wa.me/+5561981526194?text=${encodeURIComponent(pedidoTexto)}`;
+            window.open(whatsappURL, '_blank');
+        }
+    </script>
+</body>
+</html>
