@@ -1031,9 +1031,17 @@
                 
                 // Preço adicional dos sabores
                 let adicional = 0;
+                if (pizza.tipo === 'inteira') {
+                // Pizza inteira: soma todos os adicionais (normalmente só tem 1 sabor)
                 pizza.sabores.forEach(sabor => {
                     adicional += sabor.preco;
                 });
+            } else if (pizza.tipo === 'metade') {
+                // Pizza metade-metade: pega apenas o MAIOR adicional
+                if (pizza.sabores.length > 0) {
+                    adicional = Math.max(...pizza.sabores.map(sabor => sabor.preco));
+                }
+            }
                 
                 // Preço total para esta pizza
                 const precoPizza = (precoBase + adicional) * pizza.quantidade;
@@ -1042,6 +1050,7 @@
                 html += `<div class="order-item">
                     <div><strong>Pizza ${index + 1}:</strong> ${tamanho.nome} (${pizza.tipo === 'inteira' ? 'Inteira' : 'Metade-Metade'}) × ${pizza.quantidade}</div>
                     <div><strong>Sabores:</strong> ${pizza.sabores.map(s => s.nome).join(' + ')}</div>
+                    <div><strong>Detalhes:</strong> R$ ${precoBase.toFixed(2)} (base) + R$ ${adicional.toFixed(2)} (maior adicional) = R$ ${(precoBase + adicional).toFixed(2)} × ${pizza.quantidade}</div>
                     <div><strong>Valor:</strong> R$ ${precoPizza.toFixed(2)}</div>
                 </div>`;
             });
@@ -1183,3 +1192,4 @@
 </body>
 
 </html>
+
